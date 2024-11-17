@@ -1,54 +1,73 @@
 // Allows users to select food via image buttons.
 
-import React from "react";
+import React, { useState } from "react"; // Import React and useState for state management
 
 /**
  * FoodSelector Component
- * Allows users to select their favorite food by clicking on an image button.
- * The selected food is passed to the parent component through the setFood function.
+ * Allows users to select their favorite food by clicking on image buttons.
+ * Highlights the selected food and displays it below the options.
  *
  * @param {Function} setFood - A function to update the selected food in the parent component.
- * @returns {JSX.Element} - A React component for selecting food options.
+ * @returns {JSX.Element} - The FoodSelector component.
  */
-
 function FoodSelector({ setFood }) {
-    // Array of food options with labels and image paths
+    // State to keep track of the selected food
+    const [selectedFood, setSelectedFood] = useState("");
+
+    // Array of food options with labels and images
     const foodOptions = [
-        { label: "Italian", image: "/images/italian.jpg" }, // Italian food option
-        { label: "Sushi", image: "/images/sushi.jpg" },     // Sushi food option
-        { label: "Street Food", image: "/images/streetfood.jpg" }, // Street Food option
-        { label: "Comfort Food", image: "/images/comfortfood.jpg" }, // Comfort Food option
+        { label: "Italian", image: "/images/italian.jpg" },
+        { label: "Sushi", image: "/images/sushi.jpg" },
+        { label: "Street Food", image: "/images/streetfood.jpg" },
+        { label: "Comfort Food", image: "/images/comfortfood.jpg" },
     ];
+
+    /**
+     * Handle selecting a food option.
+     * Updates both the local state (for UI feedback) and the parent state.
+     *
+     * @param {string} food - The label of the selected food.
+     */
+    const handleSelect = (food) => {
+        setSelectedFood(food); // Update local state
+        setFood(food); // Update parent state via prop function
+    };
 
     return (
         <div className="mt-6">
-            {/* Title for the food selection section */}
-            <h2 className="text-xl font-semibold mb-4">Choose Your Favorite Food:</h2>
-            {/* Grid container to display food options */}
+            {/* Section title */}
+            <h2 className="text-xl font-semibold mb-4">Choose a type of Food:</h2>
+            {/* Grid of food options */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {foodOptions.map((food) => (
-                    // Render a button for each food option
                     <button
-                        key={food.label} // Unique key for each option
-                        onClick={() => setFood(food.label)} // Update the selected food when clicked
-                        className="relative w-40 h-40 bg-cover bg-center rounded-lg shadow-md hover:scale-105 transform transition-all duration-300 border border-gray-300"
+                        key={food.label} // Unique key for each food option
+                        onClick={() => handleSelect(food.label)} // Handle button click
+                        className={`relative w-40 h-40 bg-cover bg-center rounded-lg shadow-md transform transition-all duration-300 border ${
+                            selectedFood === food.label
+                                ? "border-blue-500 scale-105" // Highlight selected food
+                                : "border-gray-300" // Default border for unselected food
+                        }`}
                         style={{
-                            backgroundImage: `url(${food.image})`, // Set the background image for the button
-                            backgroundSize: "cover",
-                            backgroundPosition: "center",
+                            backgroundImage: `url(${food.image})`, // Set button background to food image
                         }}
-                        aria-label={`Select ${food.label}`} // Accessibility label
+                        aria-label={`Select ${food.label}`} // Accessibility label for screen readers
                     >
-                        {/* Overlay text displaying the food label */}
+                        {/* Overlay text to show food label */}
                         <span className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white font-bold">
                             {food.label}
                         </span>
                     </button>
                 ))}
             </div>
+            {/* Display the selected food */}
+            {selectedFood && (
+                <p className="text-sm text-gray-600 mt-2">
+                    Selected Food: <span className="font-bold">{selectedFood}</span>
+                </p>
+            )}
         </div>
     );
 }
 
-// Export the FoodSelector component so it can be used in other parts of the application
 export default FoodSelector;
