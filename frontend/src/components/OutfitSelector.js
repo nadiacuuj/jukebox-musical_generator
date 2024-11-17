@@ -1,0 +1,1 @@
+// Allows users to select an outfit via image buttons.

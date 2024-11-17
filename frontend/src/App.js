@@ -1,3 +1,5 @@
+// Main React component that sets up routing.
+
 import logo from './logo.svg';
 import './App.css';
 
