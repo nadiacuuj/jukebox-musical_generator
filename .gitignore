@@ -1,3 +1,5 @@
+# Specifies files and directories that Git should ignore.
+
 # *.pyc 
 # __pycache__/
 .venv

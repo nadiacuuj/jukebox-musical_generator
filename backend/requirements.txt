@@ -1,0 +1,6 @@
+# Specifies Python dependencies for the backend.
+
+flask                 # Web framework for the backend
+openai                # For OpenAI GPT API integration
+requests              # To make HTTP requests (e.g., Spotify API)
+python-dotenv         # To manage environment variables
