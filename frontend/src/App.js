@@ -1,27 +1,28 @@
 // Main React component that sets up routing.
 
-import logo from './logo.svg';
-import './App.css';
+// Import necessary libraries and components
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // For routing
+import Home from "./pages/Home"; // Import Home page
+import Results from "./pages/Results"; // Import Results page
 
+/**
+ * App Component
+ * The main entry point of the application that sets up routing.
+ */
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Router>
+            {/* Define routes for the application */}
+            <Routes>
+                {/* Route for the Home page */}
+                <Route path="/" element={<Home />} />
+                {/* Route for the Results page */}
+                <Route path="/results" element={<Results />} />
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;
+
