@@ -3,11 +3,7 @@
 import requests
 from config import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET
 
-
 def get_spotify_token():
-    """
-    Retrieves an access token for Spotify API.
-    """
     auth_url = 'https://accounts.spotify.com/api/token'
     payload = {
         'grant_type': 'client_credentials',
@@ -15,24 +11,23 @@ def get_spotify_token():
         'client_secret': SPOTIFY_CLIENT_SECRET
     }
     response = requests.post(auth_url, data=payload)
-    response.raise_for_status()
+    if response.status_code != 200:
+        raise Exception(f"Failed to retrieve Spotify token: {response.json()}")
     return response.json().get('access_token')
-
 
 def search_tracks(query, token, limit=10):
     """
-    Searches Spotify for tracks matching the query.
+    Fetch popular songs related to the query.
     """
-    url = f"https://api.spotify.com/v1/search"
+    url = f"https://api.spotify.com/v1/search?q={query}&type=track&limit={limit}"
     headers = {"Authorization": f"Bearer {token}"}
-    params = {"q": query, "type": "track", "limit": limit}
+    response = requests.get(url, headers=headers)
+    if response.status_code != 200:
+        raise Exception(f"Failed to search Spotify tracks: {response.json()}")
 
-    response = requests.get(url, headers=headers, params=params)
-    response.raise_for_status()
+    # Clean and simplify the track data
     tracks = response.json().get('tracks', {}).get('items', [])
-
-    # Clean track data for the frontend
-    return [
+    cleaned_tracks = [
         {
             "name": track.get("name"),
             "artists": [{"name": artist.get("name")} for artist in track.get("artists", [])],
@@ -42,3 +37,4 @@ def search_tracks(query, token, limit=10):
         }
         for track in tracks
     ]
+    return cleaned_tracks

@@ -8,45 +8,58 @@ function Results() {
     const location = useLocation();
     const navigate = useNavigate();
 
+    // State for generated plot, playlist, and loading/error status
     const [plot, setPlot] = useState("");
     const [playlist, setPlaylist] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
+    // Extract data passed from the Home page
     const { food, outfit, mood, actors } = location.state || {};
 
+    // Function to fetch data from the backend
     const fetchMusicalData = async () => {
         setLoading(true);
-        setError("");
+        setError(""); // Reset errors
 
         try {
+            console.log("Sending request to backend:", { food, outfit, mood, actors });
+
             const response = await fetch("http://127.0.0.1:5000/generate", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                },
                 body: JSON.stringify({
                     food,
                     outfit,
                     mood,
                     actors,
-                    limit: 5,
+                    limit: 5, // Limit number of Spotify tracks
                 }),
             });
 
+            console.log("Backend response raw:", response);
+
             if (response.ok) {
                 const data = await response.json();
-                setPlot(data.plot);
-                setPlaylist(data.tracks || []);
+                console.log("Parsed backend response:", data);
+                setPlot(data.plot); // Set the generated plot
+                setPlaylist(data.tracks || []); // Set the Spotify playlist
             } else {
                 const errorData = await response.json();
+                console.error("Error from backend:", errorData);
                 setError(errorData.error || "Something went wrong.");
             }
         } catch (err) {
+            console.error("API Fetch Error:", err);
             setError("Failed to connect to the backend. Is it running?");
         } finally {
             setLoading(false);
         }
     };
 
+    // Fetch data when the component is mounted
     useEffect(() => {
         if (food && outfit && mood) {
             fetchMusicalData();
@@ -56,37 +69,49 @@ function Results() {
         }
     }, [food, outfit, mood]);
 
-    const handleStartOver = () => navigate("/");
+    const handleStartOver = () => {
+        navigate("/");
+    };
 
-    const handleRegenerate = () => fetchMusicalData();
+    const handleRegenerate = () => {
+        fetchMusicalData(); // Re-fetch data
+    };
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) {
+        return <p>Loading...</p>;
+    }
 
     if (error) {
         return (
-            <div className="container mx-auto text-center">
+            <div className="container mx-auto p-6 text-center">
                 <p className="text-red-500">{error}</p>
-                <button onClick={handleStartOver} className="btn btn-primary">
-                    Start Over
+                <button
+                    onClick={handleStartOver}
+                    className="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                >
+                    Change Preferences
                 </button>
             </div>
         );
     }
 
     return (
-        <div className="container mx-auto text-center">
+        <div className="container mx-auto p-6 text-center">
             <h1 className="text-4xl font-bold mb-6">Your JukeCrate Musical</h1>
-            <div className="bg-gray-100 p-6 mb-6 rounded shadow">
-                <p className="text-lg">{plot}</p>
-            </div>
-            <h2 className="text-2xl font-semibold mb-4">Generated Playlist:</h2>
+            <p className="text-lg text-gray-700 mb-4">{plot}</p>
             <PlaylistDisplay tracks={playlist} />
             <div className="flex justify-center gap-4 mt-6">
-                <button onClick={handleRegenerate} className="btn btn-danger">
-                    Regenerate!
+                <button
+                    onClick={handleRegenerate}
+                    className="px-6 py-3 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                >
+                    I Don’t Like This, Regenerate
                 </button>
-                <button onClick={handleStartOver} className="btn btn-primary">
-                    Start Over
+                <button
+                    onClick={handleStartOver}
+                    className="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                >
+                    Change Preferences
                 </button>
             </div>
         </div>
