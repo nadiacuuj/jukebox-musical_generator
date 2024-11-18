@@ -8,7 +8,7 @@ function Results() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // State for generated plot, playlist, and loading/error status
+    // State to store the musical plot, playlist, and request states
     const [plot, setPlot] = useState("");
     const [playlist, setPlaylist] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -17,7 +17,7 @@ function Results() {
     // Extract data passed from the Home page
     const { food, outfit, mood, actors } = location.state || {};
 
-    // Function to fetch data from the backend
+    // Function to fetch the jukebox musical and playlist from the backend
     const fetchMusicalData = async () => {
         setLoading(true);
         setError(""); // Reset errors
@@ -35,31 +35,31 @@ function Results() {
                     outfit,
                     mood,
                     actors,
-                    limit: 5, // Limit number of Spotify tracks
+                    limit: 5, // Limit the number of Spotify tracks
                 }),
             });
 
-            console.log("Backend response raw:", response);
+            console.log("Raw backend response:", response);
 
             if (response.ok) {
                 const data = await response.json();
                 console.log("Parsed backend response:", data);
-                setPlot(data.plot); // Set the generated plot
-                setPlaylist(data.tracks || []); // Set the Spotify playlist
+                setPlot(data.plot); // Save the generated plot
+                setPlaylist(data.tracks || []); // Save the Spotify playlist
             } else {
                 const errorData = await response.json();
-                console.error("Error from backend:", errorData);
+                console.error("Backend returned an error:", errorData);
                 setError(errorData.error || "Something went wrong.");
             }
         } catch (err) {
-            console.error("API Fetch Error:", err);
+            console.error("Error fetching API:", err);
             setError("Failed to connect to the backend. Is it running?");
         } finally {
-            setLoading(false);
+            setLoading(false); // Loading complete
         }
     };
 
-    // Fetch data when the component is mounted
+    // Trigger fetch when component mounts
     useEffect(() => {
         if (food && outfit && mood) {
             fetchMusicalData();
@@ -69,18 +69,22 @@ function Results() {
         }
     }, [food, outfit, mood]);
 
+    // Start over navigation
     const handleStartOver = () => {
         navigate("/");
     };
 
+    // Regenerate the musical plot and playlist
     const handleRegenerate = () => {
-        fetchMusicalData(); // Re-fetch data
+        fetchMusicalData();
     };
 
+    // Loading state
     if (loading) {
-        return <p>Loading...</p>;
+        return <p className="text-center text-gray-600">Loading...</p>;
     }
 
+    // Error state
     if (error) {
         return (
             <div className="container mx-auto p-6 text-center">
@@ -95,11 +99,17 @@ function Results() {
         );
     }
 
+    // Render plot and playlist
     return (
         <div className="container mx-auto p-6 text-center">
-            <h1 className="text-4xl font-bold mb-6">Your JukeCrate Musical</h1>
-            <p className="text-lg text-gray-700 mb-4">{plot}</p>
-            <PlaylistDisplay tracks={playlist} />
+            <h1 className="text-4xl font-bold mb-6 text-indigo-700">Your JukeCrate Musical</h1>
+            <div className="bg-gray-100 p-6 rounded-md shadow-lg mb-6">
+                <p className="text-lg text-gray-700 leading-relaxed">{plot}</p>
+            </div>
+            <div className="bg-white p-4 shadow rounded-md">
+                <h2 className="text-2xl font-semibold mb-4 text-gray-800">Generated Playlist:</h2>
+                <PlaylistDisplay tracks={playlist} />
+            </div>
             <div className="flex justify-center gap-4 mt-6">
                 <button
                     onClick={handleRegenerate}
