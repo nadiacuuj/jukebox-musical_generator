@@ -44,7 +44,7 @@ function Home() {
         <div className="container mx-auto p-6">
             <h1 className="text-4xl font-bold mb-6">Create Your JukeCrate Musical</h1>
             <p className="text-lg text-gray-700 mb-4">
-                Select your preferences below to generate your personalized jukebox musical.
+                Select some random preferences below to generate your personalized jukebox musical.
             </p>
             <FoodSelector setFood={setFood} />
             <OutfitSelector setOutfit={setOutfit} />
