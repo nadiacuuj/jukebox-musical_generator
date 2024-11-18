@@ -10,6 +10,7 @@ import os
 app = Flask(__name__)
 CORS(app)  # Enable CORS for cross-origin requests
 
+
 @app.route('/generate', methods=['POST'])
 def generate_musical_route():
     """
@@ -24,28 +25,39 @@ def generate_musical_route():
         actors = data.get('actors', [])
         limit = data.get('limit', 5)
 
-        # Validate request data
+        # Validate required inputs
         if not food or not outfit or not mood:
             return jsonify({'error': 'Food, outfit, and mood are required fields'}), 400
+
+        # Generate the fictional character(s) based on actors
+        character_descriptions = []
+        for actor in actors:
+            character_descriptions.append(f"A unique character inspired by {actor}.")
 
         # Generate the musical plot
         plot = None
         openai_status = "Success"
         try:
-            plot = generate_musical(food, outfit, mood, "Main Cast", actors)
+            plot = generate_musical(
+                food=food,
+                outfit=outfit,
+                mood=mood,
+                cast="; ".join(character_descriptions)
+            )
         except Exception as e:
             openai_status = f"OpenAI Error: {str(e)}"
 
-        # Fetch Spotify tracks
+        # Generate a Spotify playlist based on all inputs
         tracks = []
         spotify_status = "Success"
         try:
             token = get_spotify_token()
-            tracks = search_tracks(mood, token, limit=limit)
+            query = f"{food} {outfit} {mood} playlist"  # Build a query for Spotify
+            tracks = search_tracks(query, token, limit=limit)
         except Exception as e:
             spotify_status = f"Spotify Error: {str(e)}"
 
-        # Return JSON response
+        # Return combined results
         return jsonify({
             'plot': plot,
             'tracks': tracks,

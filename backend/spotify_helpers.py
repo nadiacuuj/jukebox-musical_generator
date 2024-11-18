@@ -3,6 +3,7 @@
 import requests
 from config import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET
 
+
 def get_spotify_token():
     """
     Retrieves an access token for Spotify API.
@@ -16,6 +17,7 @@ def get_spotify_token():
     response = requests.post(auth_url, data=payload)
     response.raise_for_status()
     return response.json().get('access_token')
+
 
 def search_tracks(query, token, limit=10):
     """

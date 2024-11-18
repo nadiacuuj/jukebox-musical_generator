@@ -8,58 +8,45 @@ function Results() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // State to store the musical plot, playlist, and request states
     const [plot, setPlot] = useState("");
     const [playlist, setPlaylist] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    // Extract data passed from the Home page
     const { food, outfit, mood, actors } = location.state || {};
 
-    // Function to fetch the jukebox musical and playlist from the backend
     const fetchMusicalData = async () => {
         setLoading(true);
-        setError(""); // Reset errors
+        setError("");
 
         try {
-            console.log("Sending request to backend:", { food, outfit, mood, actors });
-
             const response = await fetch("http://127.0.0.1:5000/generate", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     food,
                     outfit,
                     mood,
                     actors,
-                    limit: 5, // Limit the number of Spotify tracks
+                    limit: 5,
                 }),
             });
 
-            console.log("Raw backend response:", response);
-
             if (response.ok) {
                 const data = await response.json();
-                console.log("Parsed backend response:", data);
-                setPlot(data.plot); // Save the generated plot
-                setPlaylist(data.tracks || []); // Save the Spotify playlist
+                setPlot(data.plot);
+                setPlaylist(data.tracks || []);
             } else {
                 const errorData = await response.json();
-                console.error("Backend returned an error:", errorData);
                 setError(errorData.error || "Something went wrong.");
             }
         } catch (err) {
-            console.error("Error fetching API:", err);
             setError("Failed to connect to the backend. Is it running?");
         } finally {
-            setLoading(false); // Loading complete
+            setLoading(false);
         }
     };
 
-    // Trigger fetch when component mounts
     useEffect(() => {
         if (food && outfit && mood) {
             fetchMusicalData();
@@ -69,58 +56,36 @@ function Results() {
         }
     }, [food, outfit, mood]);
 
-    // Start over navigation
-    const handleStartOver = () => {
-        navigate("/");
-    };
+    const handleStartOver = () => navigate("/");
 
-    // Regenerate the musical plot and playlist
-    const handleRegenerate = () => {
-        fetchMusicalData();
-    };
+    const handleRegenerate = () => fetchMusicalData();
 
-    // Loading state
-    if (loading) {
-        return <p className="text-center text-gray-600">Loading...</p>;
-    }
+    if (loading) return <p>Loading...</p>;
 
-    // Error state
     if (error) {
         return (
-            <div className="container mx-auto p-6 text-center">
+            <div className="container mx-auto text-center">
                 <p className="text-red-500">{error}</p>
-                <button
-                    onClick={handleStartOver}
-                    className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition shadow-md"
-                >
+                <button onClick={handleStartOver} className="btn btn-primary">
                     Start Over
                 </button>
             </div>
         );
     }
 
-    // Render plot and playlist
     return (
-        <div className="container mx-auto p-6 text-center">
-            <h1 className="text-4xl font-bold mb-6 text-indigo-700">Your JukeCrate Musical</h1>
-            <div className="bg-gray-100 p-6 rounded-md shadow-lg mb-6">
-                <p className="text-lg text-gray-700 leading-relaxed">{plot}</p>
+        <div className="container mx-auto text-center">
+            <h1 className="text-4xl font-bold mb-6">Your JukeCrate Musical</h1>
+            <div className="bg-gray-100 p-6 mb-6 rounded shadow">
+                <p className="text-lg">{plot}</p>
             </div>
-            <div className="bg-white p-4 shadow rounded-md">
-                <h2 className="text-2xl font-semibold mb-4 text-gray-800">Generated Playlist:</h2>
-                <PlaylistDisplay tracks={playlist} />
-            </div>
+            <h2 className="text-2xl font-semibold mb-4">Generated Playlist:</h2>
+            <PlaylistDisplay tracks={playlist} />
             <div className="flex justify-center gap-4 mt-6">
-                <button
-                    onClick={handleRegenerate}
-                    className="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition shadow-md"
-                >
+                <button onClick={handleRegenerate} className="btn btn-danger">
                     Regenerate!
                 </button>
-                <button
-                    onClick={handleStartOver}
-                    className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition shadow-md"
-                >
+                <button onClick={handleStartOver} className="btn btn-primary">
                     Start Over
                 </button>
             </div>
