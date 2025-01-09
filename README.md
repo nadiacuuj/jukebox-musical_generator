@@ -1,5 +1,15 @@
 # Jukecrate Musical Generator
 
+## Overview
+
+The JukeCrate Musical Generator is a Broadway-inspired webapp project that:
+
+1. Takes your preferences (mood, food, themes, cast, etc.).
+2. Generates a custom jukebox musical plot using OpenAI’s GPT.
+3. Curates a Spotify playlist of Broadway/musical theatre songs to match the mood and vibe of your musical.
+
+Unlike traditional jukebox musicals—which are usually tied to just one artist or album (Mamma Mia! = ABBA, Jersey Boys = The Four Seasons)—this generator (or at least was supposed to) pull from different artists and different albums to create something fresh. And instead called it a JukeCrate musical, since a crate sometimes holds a bunch of different boxes. But the code behind playlist generation is still really wonky so I'm still working on making that better.
+
 ## Preface
 
 I realized that my actual project only takes about 30 seconds to demo — so, to stretch things out, I’ll preface my presentation with some backstory (and hopefully use up some time)!
@@ -11,18 +21,6 @@ But when I revisited the assignment guidelines, I realized this approach didn’
 Why data? Well, it’s a big part of my journey. I didn’t know what career I wanted, but where I grew up in Asia, not knowing your career path often meant defaulting to computer science (CS). My brother, sister-in-law, cousins, and friends all studied CS, so naturally, I ended up coding too. But I hated hardcore CS! The technical coding just wasn’t for me.
 
 Thankfully, someone suggested data science as a more “social-science-y” alternative. While I quickly learned that wasn’t entirely true (math, math, and more math), there were moments of creativity—like this project. And that’s how I decided to build the Jukecrate Musical Generator, tying together data, Broadway, and topics we explored in class.
-
-
-## Overview
-
-The JukeCrate Musical Generator is a Broadway-inspired webapp project that:
-
-1. Takes your preferences (mood, food, themes, cast, etc.).
-2. Generates a custom jukebox musical plot using OpenAI’s GPT.
-3. Curates a Spotify playlist of Broadway/musical theatre songs to match the mood and vibe of your musical.
-
-Unlike traditional jukebox musicals—which are usually tied to just one artist or album (Mamma Mia! = ABBA, Jersey Boys = The Four Seasons)—this generator (or at least was supposed to) pull from different artists and different albums to create something fresh. And instead called it a JukeCrate musical, since a crate sometimes holds a bunch of different boxes. But the code behind playlist generation is still really wonky so I'm still working on making that better.
-
 
 ---
 
