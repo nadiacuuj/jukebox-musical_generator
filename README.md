@@ -1,4 +1,4 @@
-# Jukecrate Musical Generator
+# "Jukecrate Musical" Generator
 
 ## Overview
 
