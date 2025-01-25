@@ -5,7 +5,7 @@
 The JukeCrate Musical Generator is a Broadway-inspired webapp project that:
 
 1. Takes your preferences (mood, food, themes, cast, etc.).
-2. Generates a custom jukebox musical plot using OpenAI’s GPT.
+2. Generates a custom jukebox musical plot using OpenAI’s GPT API.
 3. Curates a Spotify playlist of Broadway/musical theatre songs to match the mood and vibe of your musical.
 
 Unlike traditional jukebox musicals—which are usually tied to just one artist or album (Mamma Mia! = ABBA, Jersey Boys = The Four Seasons)—this generator (or at least was supposed to) pull from different artists and different albums to create something fresh. And instead called it a JukeCrate musical, since a crate sometimes holds a bunch of different boxes. But the code behind playlist generation is still really wonky so I'm still working on making that better.
