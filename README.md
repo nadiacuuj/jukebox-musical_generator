@@ -21,9 +21,9 @@ From pretty early on in the course, I knew I wanted to create a data product. Da
 
 But when I revisited the assignment guidelines, I realized this approach didn’t quite fit. The goal was to combine an outside musical with themes and topics from class, and my original idea didn’t align perfectly with that. That’s when I decided: the "outside class" element could be data itself.
 
-Why data? Well, it’s a big part of my journey. I didn’t know what career I wanted, but where I grew up in Asia, not knowing your career path often meant defaulting to computer science (CS). My brother, sister-in-law, cousins, and friends all studied CS, so naturally, I ended up coding too. But I hated hardcore CS! The technical coding just wasn’t for me.
+Why Data? Data has been a big part of my journey. Growing up in Asia, where computer science (CS) was the default career path for many, I naturally found myself coding—just like my brother, sister-in-law, cousins, and friends. But while I enjoyed problem-solving, I realized I wasn’t drawn to pure software development.
 
-Thankfully, someone suggested data science as a more “social-science-y” alternative. While I quickly learned that wasn’t entirely true (math, math, and more math), there were moments of creativity—like this project. And that’s how I decided to build the Jukecrate Musical Generator, tying together data, Broadway, and topics we explored in class.
+Then, I discovered data science—not just as a technical field, but as a way to blend logic with creativity. While it’s full of math (a lot of math), it also offers opportunities to think outside the box—like with this project. That’s what led me to build the Jukecrate Musical Generator, combining data, Broadway, and topics from class into something both analytical and expressive.
 
 ---
 
